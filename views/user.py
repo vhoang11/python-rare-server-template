@@ -71,7 +71,7 @@ def create_user(user):
             'token': id,
             'valid': True
         })
-<<<<<<< HEAD:views/user_request.py
+        #HEAD:views/user_request.py
 
 def update_user(id, new_user):
     with sqlite3.connect("./kennel.sqlite3") as conn:
@@ -101,7 +101,7 @@ def update_user(id, new_user):
     else:
         # Forces 204 response by main module
         return True
-=======
+
 def get_all_users():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -148,4 +148,12 @@ def get_all_users():
             users.append(user.__dict__) # see the notes below for an explanation on this line of code.
 
     return users
->>>>>>> main:views/user.py
+
+def delete_user(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Users
+        WHERE id = ?
+        """, (id, ))
