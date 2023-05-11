@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user,get_all_users
+from views.post import create_post, get_all_posts, delete_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -60,36 +61,49 @@ class HandleRequests(BaseHTTPRequestHandler):
         # If the path does not include a query parameter, continue with the original if block
         if self.path == "/users":
             response = get_all_users()
+        elif self.path == "/posts":
+            response = get_all_posts()
         else:
             response = []
         self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
-        """Make a post request to the server"""
+        """Make a post request to the server
+        """
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
-        response = ''
+        # response = ''
         resource, _ = self.parse_url()
         
-        new_post = None
 
         if resource == 'login':
             response = login_user(post_body)
+            self.wfile.write(response.encode())
         if resource == 'register':
             response = create_user(post_body)
-        if resource == "posts":
-            new_post = create_post(post_body)
-            
-        self.wfile.write(response.encode())
+            self.wfile.write(response.encode())
+        if resource == 'posts':
+            response = create_post(post_body)
+            self.wfile.write(response.encode())
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
         pass
 
     def do_DELETE(self):
-        """Handle DELETE Requests"""
-        pass
+        """Handle DELETE Requests
+        """
+        # Set a 204 response code
+        self._set_headers(204)
+
+        # Parse the URL
+        (resource, id) = self.parse_url()
+
+        # Delete a single animal from the list
+        if resource == "posts":
+            delete_post(id)
+            self.wfile.write("".encode())
 
 
 def main():
