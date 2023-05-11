@@ -53,7 +53,7 @@ def create_user(user):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        Insert into Users (first_name, last_name, username, email, password, bio,profile_image_url, created_on, active) values (?, ?, ?, ?, ?, ?, ?, ?, 1)
+        Insert into Users (first_name, last_name, username, email, password, bio, profile_image_url, created_on, active) values (?, ?, ?, ?, ?, ?, ?, ?, 1)
         """, (
             user['first_name'],
             user['last_name'],
@@ -71,6 +71,7 @@ def create_user(user):
             'token': id,
             'valid': True
         })
+        
 def get_all_users():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
