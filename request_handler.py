@@ -1,7 +1,11 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
+<<<<<<< HEAD
 from views import create_user, login_user,get_all_users,delete_user
+=======
+from views.user import create_user, login_user, get_all_users, update_user
+>>>>>>> main
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -81,7 +85,27 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url()
+
+        # set default value of success
+        success = False
+
+        if resource == "users":
+            success = update_user(id, post_body)
+
+         # handle the value of success
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+        
+        # Encode the new animal and send in response
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         # Set a 204 response code

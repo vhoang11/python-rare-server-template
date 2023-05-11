@@ -127,7 +127,7 @@ def get_all_users():
         FROM Users a
         """)
 
-        # Initialize an empty list to hold all animal representations
+        # Initialize an empty list to hold all user representations
         users = []
 
         # Convert rows of data into a Python list
@@ -136,10 +136,10 @@ def get_all_users():
         # Iterate list of data returned from database
         for row in dataset:
 
-            # Create an animal instance from the current row.
+            # Create an user instance from the current row.
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
-            # Animal class above.
+            # user class above.
             user = Users(row['id'], row['first_name'], row['last_name'],
                             row['email'], row['bio'],
                             row['username'],row['password'],row['profile_image_url'],row['created_on'],
@@ -149,11 +149,45 @@ def get_all_users():
 
     return users
 
+<<<<<<< HEAD
 def delete_user(id):
+=======
+def update_user(id, new_user):
+>>>>>>> main
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
+<<<<<<< HEAD
         DELETE FROM Users
         WHERE id = ?
         """, (id, ))
+=======
+        UPDATE Users
+            SET
+                first_name = ?,
+                last_name = ?,
+                email = ?,
+                bio = ?,
+                username = ?,
+                password = ?,
+                profile_image_url = ?,
+                created_on = ?,
+                active = ?
+        WHERE id = ?
+        """, (new_user['first_name'], new_user['last_name'], new_user['email'], new_user['bio'], 
+              new_user['username'], new_user['password'], new_user['profile_image_url'], 
+              new_user['created_on'], new_user['active'], id, ))
+
+        # Were any rows affected?
+        # Did the client send an `id` that exists?
+        rows_affected = db_cursor.rowcount
+
+    # return value of this function
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True
+>>>>>>> main
