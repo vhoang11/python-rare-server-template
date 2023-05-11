@@ -118,6 +118,15 @@ def get_all_users():
 
     return users
 
+def delete_user(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Users
+        WHERE id = ?
+        """, (id, ))
+
 def update_user(id, new_user):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
@@ -150,3 +159,4 @@ def update_user(id, new_user):
     else:
         # Forces 204 response by main module
         return True
+    
