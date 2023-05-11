@@ -3,7 +3,7 @@ import json
 
 from views.post import create_post, get_all_posts, delete_post
 from views.user import create_user, login_user, get_all_users, update_user, delete_user
-from views.subscriptions import create_subscription,get_all_subscriptions
+from views.subscriptions import create_subscription,get_all_subscriptions,delete_subscription
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -131,6 +131,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Delete a single user from the list
         if resource == "users":
             delete_user(id)
+        if resource == "subscriptions":
+            delete_subscription(id)    
 
         # Encode the new animal and send in response
             self.wfile.write("".encode())

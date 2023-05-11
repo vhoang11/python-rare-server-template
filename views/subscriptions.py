@@ -63,13 +63,13 @@ def get_all_subscriptions():
             subscriptions.append(subscription.__dict__) # see the notes below for an explanation on this line of code.
     return subscriptions
   
-def delete_post(id):
+def delete_subscription(id):
     """Let's get rid of that post!
     """
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM posts
+        DELETE FROM Subscriptions
         WHERE id = ?
         """, (id, ))
