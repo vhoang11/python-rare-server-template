@@ -92,3 +92,5 @@ INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.c
 INSERT INTO Users VALUES (null, "Charles", "Bridgers IV", "charlesbridgersiv@gmail.com", "Born in Nashville", "SeaForeEx", "saltinecrackers", "sexy image", 11, True)
 
 INSERT INTO Posts VALUES (null, 1, 1, "The Worst Post Ever", 11, "badimage.com", "This post will keep your life the same, stay on the crack!", True)
+
+SELECT * FROM Users
