@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
-from views.user import create_user, login_user
+from views.user import create_user, login_user,get_all_users
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -50,9 +50,19 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """Handle Get requests to the server"""
-        pass
+        self._set_headers(200)
 
+        response = {}
+
+        # Parse URL and store entire tuple in a variable
+        parsed = self.parse_url()
+
+        # If the path does not include a query parameter, continue with the original if block
+        if self.path == "/users":
+            response = get_all_users()
+        else:
+            response = []
+        self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         """Make a post request to the server"""
