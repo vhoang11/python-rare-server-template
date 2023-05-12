@@ -3,6 +3,7 @@ import json
 
 from views.post import create_post, get_all_posts, delete_post
 from views.user import create_user, login_user, get_all_users, update_user, delete_user
+from views.categories import create_category, get_all_categories, delete_category
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -62,6 +63,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = get_all_users()
         elif self.path == "/posts":
             response = get_all_posts()
+        elif self.path == "/categories":
+            response = get_all_categories()
         else:
             response = []
         self.wfile.write(json.dumps(response).encode())
@@ -84,6 +87,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write(response.encode())
         if resource == 'posts':
             response = create_post(post_body)
+            self.wfile.write(response.encode())
+        if resource == 'categories':
+            response = create_category(post_body)
             self.wfile.write(response.encode())
 
     def do_PUT(self):
@@ -119,12 +125,15 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, id) = self.parse_url()
 
-        # Delete a single animal from the list
+        # Delete a single post from the list
         if resource == "posts":
             delete_post(id)
         # Delete a single user from the list
         if resource == "users":
             delete_user(id)
+        # Delete a single category from the list
+        if resource == "categories":
+            delete_category(id)
 
         # Encode the new animal and send in response
             self.wfile.write("".encode())
