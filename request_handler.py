@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
-from views.post import create_post, get_all_posts, delete_post
+from views.post import create_post, get_all_posts, delete_post, update_post
 from views.user import create_user, login_user, get_all_users, update_user, delete_user
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -100,6 +100,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             success = update_user(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)
 
          # handle the value of success
         if success:
