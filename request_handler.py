@@ -3,7 +3,12 @@ import json
 
 from views.post import create_post, get_all_posts, delete_post
 from views.user import create_user, login_user, get_all_users, update_user, delete_user
+<<<<<<< HEAD
 from views.categories import create_category, get_all_categories, delete_category
+=======
+from views.comment import create_comment, get_all_comments, update_comment, delete_comment
+from views.subscriptions import create_subscription,get_all_subscriptions,delete_subscription
+>>>>>>> main
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -63,8 +68,15 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = get_all_users()
         elif self.path == "/posts":
             response = get_all_posts()
+<<<<<<< HEAD
         elif self.path == "/categories":
             response = get_all_categories()
+=======
+        elif self.path == "/comments":
+            response = get_all_comments()
+        elif self.path == "/subscriptions":
+            response = get_all_subscriptions()    
+>>>>>>> main
         else:
             response = []
         self.wfile.write(json.dumps(response).encode())
@@ -77,7 +89,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = json.loads(self.rfile.read(content_len))
         # response = ''
         resource, _ = self.parse_url()
-        
 
         if resource == 'login':
             response = login_user(post_body)
@@ -87,10 +98,18 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write(response.encode())
         if resource == 'posts':
             response = create_post(post_body)
+        if resource == 'comments':
+            response = create_comment(post_body)
             self.wfile.write(response.encode())
+<<<<<<< HEAD
         if resource == 'categories':
             response = create_category(post_body)
             self.wfile.write(response.encode())
+=======
+        if resource == 'subscriptions':
+            response = create_subscription(post_body)
+            self.wfile.write(response.encode())    
+>>>>>>> main
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
@@ -106,6 +125,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             success = update_user(id, post_body)
+        # if resource == "posts":
+        #     success = update_post(id, post_body)
+        if resource == "comments":
+            success = update_comment(id, post_body)
 
          # handle the value of success
         if success:
@@ -125,6 +148,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, id) = self.parse_url()
 
+<<<<<<< HEAD
         # Delete a single post from the list
         if resource == "posts":
             delete_post(id)
@@ -134,6 +158,19 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Delete a single category from the list
         if resource == "categories":
             delete_category(id)
+=======
+        # Delete a single user from the list
+        if resource == "users":
+            delete_user(id)
+        # Delete a single post from the list
+        if resource == "posts":
+            delete_post(id)
+        # Delete a single comment from the list
+        if resource == "comments":
+            delete_comment(id)
+        if resource == "subscriptions":
+            delete_subscription(id)    
+>>>>>>> main
 
         # Encode the new animal and send in response
             self.wfile.write("".encode())
