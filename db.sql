@@ -94,3 +94,16 @@ INSERT INTO Users VALUES (null, "Charles", "Bridgers IV", "charlesbridgersiv@gma
 INSERT INTO Posts VALUES (null, 1, 1, "The Worst Post Ever", 11, "badimage.com", "This post will keep your life the same, stay on the crack!", True)
 
 SELECT * FROM Users
+
+INSERT INTO Tags VALUES (null, "SQL")
+
+INSERT INTO PostTags VALUES (null, 1, 2)
+INSERT INTO PostTags VALUES (null, 3, 1)
+
+SELECT * FROM PostTags
+
+UPDATE PostTags
+SET
+    post_id = 9,
+    tag_id = 3
+WHERE id = 1

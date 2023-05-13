@@ -5,8 +5,6 @@ from models import Posts
 
 def create_post(new_post):
     """Adds a post to the database
-    Args: post (dictionary): The dictionary passed to the create post request
-    Returns: json string: Contains the token of the newly created post
     """
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
