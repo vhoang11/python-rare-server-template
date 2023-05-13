@@ -5,6 +5,7 @@ from views.post import create_post, get_all_posts, delete_post
 from views.user import create_user, login_user, get_all_users, update_user, delete_user
 from views.comment import create_comment, get_all_comments, update_comment, delete_comment
 from views.subscriptions import create_subscription,get_all_subscriptions,delete_subscription
+from views.postreactions import create_postreaction,get_all_postreactions,delete_postreactions
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -67,7 +68,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif self.path == "/comments":
             response = get_all_comments()
         elif self.path == "/subscriptions":
-            response = get_all_subscriptions()    
+            response = get_all_subscriptions()
+        elif self.path == "/postreactions":
+            response = get_all_postreactions()        
         else:
             response = []
         self.wfile.write(json.dumps(response).encode())
@@ -94,7 +97,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write(response.encode())
         if resource == 'subscriptions':
             response = create_subscription(post_body)
-            self.wfile.write(response.encode())    
+            self.wfile.write(response.encode()) 
+        if resource == 'postreactions':
+            response = create_postreaction(post_body)
+            self.wfile.write(response.encode())       
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
@@ -143,7 +149,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "comments":
             delete_comment(id)
         if resource == "subscriptions":
-            delete_subscription(id)    
+            delete_subscription(id)
+        if resource == "postreactions":
+            delete_postreactions(id)        
 
         # Encode the new animal and send in response
             self.wfile.write("".encode())
