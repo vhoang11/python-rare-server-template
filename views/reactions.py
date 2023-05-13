@@ -1,9 +1,9 @@
 import sqlite3
 import json
 from datetime import datetime
-from models import PostReactions
+from models import Reactions
 
-def create_postreaction(new_postreaction):
+def create_reaction(new_reaction):
     """Adds a post to the database
     Args: post (dictionary): The dictionary passed to the create post request
     Returns: json string: Contains the token of the newly created post
@@ -13,21 +13,20 @@ def create_postreaction(new_postreaction):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO PostReactions (user_id, reaction_id, post_id) VALUES (?, ?, ?)
+        INSERT INTO Reactions (label, image_url) VALUES (?, ?)
         """, (
-            new_postreaction['user_id'],
-            new_postreaction['reaction_id'],
-            new_postreaction['post_id']
+            new_reaction['label'],
+            new_reaction['image_url']
             
         ))
 
         id = db_cursor.lastrowid
         
-        new_postreaction['id'] = id
+        new_reaction['id'] = id
 
-        return new_postreaction
+        return new_reaction
 
-def get_all_postreactions():
+def get_all_reactions():
     """get those posts or your code is toast
     """
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -36,16 +35,16 @@ def get_all_postreactions():
         
         db_cursor.execute("""
         SELECT
-            p.id,
-            p.user_id,
-            p.reaction_id,
-            p.post_id 
+            r.id,
+            r.label,
+            r.image_url
+            
         
-        FROM PostReactions p   
+        FROM Reactions r   
         """)
         
         # Initialize an empty list to hold all post representations
-        postreactions = []
+        reactions = []
         
         # Convert rows of data into a Python list
         dataset = db_cursor.fetchall()
@@ -57,19 +56,19 @@ def get_all_postreactions():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # Post class above.
-            postreaction = PostReactions(row['id'], row['user_id'], row['reaction_id'],
-            row['post_id'])
+            reaction = Reactions(row['id'], row['label'], row['image_url']
+            )
 
-            postreactions.append(postreaction.__dict__) # see the notes below for an explanation on this line of code.
-    return postreactions
+            reactions.append(reaction.__dict__) # see the notes below for an explanation on this line of code.
+    return reactions
   
-def delete_postreactions(id):
-    """Let's get rid of that post!
+def delete_reactions(id):
+    """Let's get rid of that reaction!
     """
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM PostReactions
+        DELETE FROM Reactions
         WHERE id = ?
         """, (id, ))
