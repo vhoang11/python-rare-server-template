@@ -3,6 +3,7 @@ import json
 
 from views.post import create_post, get_all_posts, delete_post, update_post
 from views.user import create_user, login_user, get_all_users, update_user, delete_user
+from views.categories import create_category, get_all_categories, delete_category
 from views.tag import create_tag, get_all_tags, delete_tag, update_tag
 from views.posttag import create_posttag, get_all_posttags, delete_posttag, update_posttag
 from views.comment import create_comment, get_all_comments, update_comment, delete_comment
@@ -68,6 +69,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = get_all_users()
         elif self.path == "/posts":
             response = get_all_posts()
+        elif self.path == "/categories":
+            response = get_all_categories()
         elif self.path == "/tags":
             response = get_all_tags()
         elif self.path == "/posttags":
@@ -99,6 +102,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_post(post_body)
         if resource == 'comments':
             response = create_comment(post_body)
+            self.wfile.write(response.encode())
+        if resource == 'categories':
+            response = create_category(post_body)
             self.wfile.write(response.encode())
         if resource == 'tags':
             response = create_tag(post_body)
@@ -150,10 +156,14 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # Parse the URL
         (resource, id) = self.parse_url()
+        
 
         # Delete a single user from the list
         if resource == "users":
             delete_user(id)
+        # Delete a single category from the list
+        if resource == "categories":
+            delete_category(id)
         if resource == "tags":
             delete_tag(id)
         if resource == "posttags":
@@ -165,7 +175,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "comments":
             delete_comment(id)
         if resource == "subscriptions":
-            delete_subscription(id)    
+            delete_subscription(id)
 
         # Encode the new animal and send in response
             self.wfile.write("".encode())
