@@ -5,8 +5,6 @@ from models import Posts
 
 def create_post(new_post):
     """Adds a post to the database
-    Args: post (dictionary): The dictionary passed to the create post request
-    Returns: json string: Contains the token of the newly created post
     """
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
@@ -79,3 +77,29 @@ def delete_post(id):
         DELETE FROM posts
         WHERE id = ?
         """, (id, ))
+        
+def update_post(id, new_post):
+    """Faking my own death just to get some rest
+    """
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+        
+        db_cursor.execute("""
+        UPDATE Posts
+            SET
+                user_id = ?,
+                category_id = ?,
+                title = ?,
+                publication_date = ?,
+                image_url = ?,
+                content = ?,
+                approved = ?
+        WHERE id = ?             
+        """, (new_post['user_id'], new_post['category_id'], new_post['title'], new_post['publication_date'], new_post['image_url'], new_post['content'], new_post['approved'], id, ))
+        
+        rows_affected = db_cursor.rowcount
+        
+    if rows_affected == 0:
+        return False
+    else:
+        return True
