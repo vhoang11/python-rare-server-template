@@ -1,8 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
-from views.post import create_post, get_all_posts, delete_post
+from views.post import create_post, get_all_posts, delete_post, update_post
 from views.user import create_user, login_user, get_all_users, update_user, delete_user
+from views.tag import create_tag, get_all_tags, delete_tag, update_tag
+from views.posttag import create_posttag, get_all_posttags, delete_posttag, update_posttag
 from views.comment import create_comment, get_all_comments, update_comment, delete_comment
 from views.subscriptions import create_subscription,get_all_subscriptions,delete_subscription
 from views.postreactions import create_postreaction,get_all_postreactions,delete_postreactions
@@ -53,6 +55,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        """_summary_
+        """
         self._set_headers(200)
 
         response = {}
@@ -65,6 +69,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = get_all_users()
         elif self.path == "/posts":
             response = get_all_posts()
+        elif self.path == "/tags":
+            response = get_all_tags()
+        elif self.path == "/posttags":
+            response = get_all_posttags()
         elif self.path == "/comments":
             response = get_all_comments()
         elif self.path == "/subscriptions":
@@ -95,6 +103,12 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == 'comments':
             response = create_comment(post_body)
             self.wfile.write(response.encode())
+        if resource == 'tags':
+            response = create_tag(post_body)
+            self.wfile.write(response.encode())
+        if resource == 'posttags':
+            response = create_posttag(post_body)
+            self.wfile.write(response.encode())
         if resource == 'subscriptions':
             response = create_subscription(post_body)
             self.wfile.write(response.encode()) 
@@ -116,8 +130,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             success = update_user(id, post_body)
-        # if resource == "posts":
-        #     success = update_post(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)
+        if resource == "tags":
+            success = update_tag(id, post_body)
+        if resource == "posttags":
+            success = update_posttag(id, post_body)
         if resource == "comments":
             success = update_comment(id, post_body)
 
@@ -142,6 +160,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Delete a single user from the list
         if resource == "users":
             delete_user(id)
+        if resource == "tags":
+            delete_tag(id)
+        if resource == "posttags":
+            delete_posttag(id)
         # Delete a single post from the list
         if resource == "posts":
             delete_post(id)
